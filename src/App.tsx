@@ -1,12 +1,30 @@
 import { useState } from "react";
 import "./index.css";
+import { Header } from "./components/Header";
+import { Button } from "./components/Button";
+import { Indicators } from "./components/Indicators";
+import { MyTable } from "./components/MyTable";
+import Chart from "./components/Chart";
+import { SugarAddForm } from "./components/SugarAddForm";
 
 function App() {
+  const [isVisibleForm, setIsVisibleForm] = useState(false);
+
+  const openForm = () => {
+    setIsVisibleForm(true);
+  };
+
+  const closeForm = () => {
+    setIsVisibleForm(false);
+  };
   return (
     <>
-      <div className="container">
-        <h1 className="text-3xl font-bold underline">Hello world!</h1>
-      </div>
+      <Header />
+      <Button openForm={openForm} />
+      <Indicators />
+      <Chart />
+      <MyTable />
+      {isVisibleForm && <SugarAddForm />}
     </>
   );
 }
