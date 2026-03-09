@@ -14,9 +14,9 @@ function App() {
     setIsVisibleForm(true);
   };
 
-  const closeForm = () => {
-    setIsVisibleForm(false);
-  };
+  // const closeForm = () => {
+  //   setIsVisibleForm(false);
+  // };
   return (
     <>
       <Header />
