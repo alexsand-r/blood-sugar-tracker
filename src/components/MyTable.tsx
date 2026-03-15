@@ -3,15 +3,15 @@ import type { SugarRecord } from "../types/SugarRecord";
 import { formatDate } from "../utils/formatDate";
 
 interface MyTableProps {
-  data: SugarRecord[];
+  sortedDate: SugarRecord[];
 }
 
-export const MyTable = ({ data }: MyTableProps) => {
+export const MyTable = ({ sortedDate }: MyTableProps) => {
   return (
     <>
       <div className="mb-10">
         <div className="container">
-          <div className="relative overflow-x-auto bg-neutral-primary-soft rounded-lg border border-gray-200">
+          <div className="max-h-96 overflow-y-auto relative overflow-x-auto bg-neutral-primary-soft rounded-lg border border-gray-200">
             <table className="w-full min-w-150 text-sm text-left rtl:text-right text-body">
               <thead className="text-sm text-body bg-emerald-300  border-b rounded-lg border-gray-200">
                 <tr>
@@ -46,7 +46,7 @@ export const MyTable = ({ data }: MyTableProps) => {
                 </tr>
               </thead>
               <tbody>
-                {data.map((el) => {
+                {sortedDate.map((el) => {
                   return (
                     <tr
                       key={el.id}

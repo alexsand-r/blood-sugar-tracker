@@ -1,9 +1,7 @@
 import { useState } from "react";
-// import type { SugarData } from "../types/SugarData";
-import type { SugarRecord } from "../types/SugarRecord";
 
 interface ChartProps {
-  data: SugarRecord[];
+  sortedDate: SugarRecord[];
 }
 
 import {
@@ -17,56 +15,88 @@ import {
   ReferenceArea,
 } from "recharts";
 
-export default function Chart({ data }: ChartProps) {
+export default function Chart({ sortedDate }: ChartProps) {
   const [range, setRange] = useState(7);
+  const [year, setYear] = useState<string | null>(null);
 
-  const filteredData = data.slice(-range);
+  let filteredData = sortedDate;
+
+  if (year) {
+    filteredData = sortedDate.filter((item) => item.date.startsWith(year));
+  } else {
+    filteredData = sortedDate.slice(-range);
+  }
+
+  const formatDate = (date: string) => {
+    const d = new Date(date);
+
+    if (year) {
+      return d.toLocaleDateString("en-US", { month: "short" });
+    }
+
+    return d.toLocaleDateString("en-US", {
+      day: "numeric",
+      month: "short",
+    });
+  };
 
   return (
     <>
-      <div className="mb-6">
+      <div className="md:mb-6 recharts-wrapper">
         <div className="container">
           <div className="flex gap-2 mb-4">
             <button
-              onClick={() => setRange(7)}
-              className="text-slate-900 px-3 py-1 bg-gray-200 rounded cursor-pointer hover:bg-gray-300 transition duration-300"
+              onClick={() => {
+                setRange(7);
+                setYear(null);
+              }}
+              className={`px-3 py-1 rounded cursor-pointer transition
+              ${
+                range === 7 && !year
+                  ? "bg-[#afe6d1] text-white"
+                  : "bg-gray-200 text-slate-900 hover:bg-gray-300"
+              }`}
             >
               7 days
             </button>
 
             <button
-              onClick={() => setRange(30)}
-              className="text-slate-900 px-3 py-1 bg-gray-200 rounded cursor-pointer hover:bg-gray-300 transition duration-300"
+              onClick={() => {
+                setRange(30);
+                setYear(null);
+              }}
+              className={`px-3 py-1 rounded cursor-pointer transition
+              ${
+                range === 30 && !year
+                  ? "bg-[#afe6d1] text-white"
+                  : "bg-gray-200 text-slate-900 hover:bg-gray-300"
+              }`}
             >
               30 days
             </button>
 
             <select
               onChange={(e) => {
-                const year = e.target.value;
+                const selectedYear = e.target.value;
 
-                if (year !== "default") {
-                  setRange(365);
+                if (selectedYear !== "default") {
+                  setYear(selectedYear);
+                } else {
+                  setYear(null);
                 }
               }}
               defaultValue="default"
-              className=" text-slate-900 px-3 py-1 bg-gray-200 rounded cursor-pointer hover:bg-gray-300 transition duration-300 focus:outline-none focus:ring-0"
+              className={`px-3 py-1 rounded cursor-pointer transition focus:outline-none focus:ring-0
+              ${
+                year
+                  ? "bg-[#afe6d1] text-white"
+                  : "bg-gray-200 text-slate-900 hover:bg-gray-300"
+              }`}
             >
-              <option value="default" className="bg-white">
-                choose a year
-              </option>
-
-              <option value="2024" className="bg-white">
-                2024
-              </option>
-
-              <option value="2025" className="bg-white">
-                2025
-              </option>
-
-              <option value="2026" className="bg-white">
-                2026
-              </option>
+              <option value="default">choose a year</option>
+              <option value="2024">2024</option>
+              <option value="2025">2025</option>
+              <option value="2026">2026</option>
             </select>
           </div>
 
@@ -75,34 +105,51 @@ export default function Chart({ data }: ChartProps) {
               <ResponsiveContainer>
                 <LineChart data={filteredData}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" />
+
+                  <XAxis
+                    dataKey="date"
+                    tickFormatter={formatDate}
+                    interval="preserveStartEnd"
+                  />
+
                   <YAxis domain={[3, 12]} />
+
                   <Tooltip />
+
                   <ReferenceArea
                     y1={3}
                     y2={4}
                     fill="#ef4444"
                     fillOpacity={0.15}
                   />
+
                   <ReferenceArea
                     y1={4}
                     y2={5.5}
                     fill="#22c55e"
                     fillOpacity={0.15}
                   />
+
                   <ReferenceArea
                     y1={5.6}
                     y2={6.9}
                     fill="#facc15"
                     fillOpacity={0.15}
                   />
+
                   <ReferenceArea
                     y1={7}
                     y2={12}
                     fill="#ef4444"
                     fillOpacity={0.15}
                   />
-                  <Line type="monotone" dataKey="value" stroke="#3b82f6" />
+
+                  <Line
+                    type="monotone"
+                    dataKey="value"
+                    stroke="#3b82f6"
+                    strokeWidth={2}
+                  />
                 </LineChart>
               </ResponsiveContainer>
             </div>
