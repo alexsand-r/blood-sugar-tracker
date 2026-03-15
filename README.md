@@ -30,3 +30,4 @@ git add .
 git commit -m "update"
 git push
 Зайти у Vercel і дочекатися статусу Ready.
+update
