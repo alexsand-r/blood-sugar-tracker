@@ -1,5 +1,10 @@
 import { useState } from "react";
-import type { SugarData } from "../types/SugarData";
+// import type { SugarData } from "../types/SugarData";
+import type { SugarRecord } from "../types/SugarRecord";
+
+interface ChartProps {
+  data: SugarRecord[];
+}
 
 import {
   LineChart,
@@ -12,53 +17,7 @@ import {
   ReferenceArea,
 } from "recharts";
 
-const data: SugarData[] = [
-  { date: "2026-01-28", sugar: 5.4 },
-  { date: "2026-01-29", sugar: 6.1 },
-  { date: "2026-01-30", sugar: 5.7 },
-  { date: "2026-01-31", sugar: 6.4 },
-  { date: "2026-02-01", sugar: 5.9 },
-  { date: "2026-02-02", sugar: 6.6 },
-  { date: "2026-02-03", sugar: 5.3 },
-  { date: "2026-02-04", sugar: 6.2 },
-  { date: "2026-02-05", sugar: 5.8 },
-  { date: "2026-02-06", sugar: 6.0 },
-
-  { date: "2026-02-07", sugar: 5.6 },
-  { date: "2026-02-08", sugar: 6.7 },
-  { date: "2026-02-09", sugar: 5.2 },
-  { date: "2026-02-10", sugar: 6.3 },
-  { date: "2026-02-11", sugar: 5.9 },
-  { date: "2026-02-12", sugar: 6.5 },
-  { date: "2026-02-13", sugar: 5.4 },
-  { date: "2026-02-14", sugar: 6.1 },
-  { date: "2026-02-15", sugar: 5.7 },
-  { date: "2026-02-16", sugar: 6.8 },
-
-  { date: "2026-02-17", sugar: 5.3 },
-  { date: "2026-02-18", sugar: 6.0 },
-  { date: "2026-02-19", sugar: 5.5 },
-  { date: "2026-02-20", sugar: 6.4 },
-  { date: "2026-02-21", sugar: 5.9 },
-  { date: "2026-02-22", sugar: 6.6 },
-  { date: "2026-02-23", sugar: 5.2 },
-  { date: "2026-02-24", sugar: 6.1 },
-  { date: "2026-02-25", sugar: 5.8 },
-  { date: "2026-02-26", sugar: 6.3 },
-
-  { date: "2026-02-27", sugar: 5.4 },
-  { date: "2026-02-28", sugar: 6.7 },
-  { date: "2026-03-01", sugar: 5.6 },
-  { date: "2026-03-02", sugar: 6.2 },
-  { date: "2026-03-03", sugar: 5.9 },
-  { date: "2026-03-04", sugar: 6.5 },
-  { date: "2026-03-05", sugar: 5.3 },
-  { date: "2026-03-06", sugar: 6.4 },
-  { date: "2026-03-07", sugar: 5.8 },
-  { date: "2026-03-08", sugar: 6.1 },
-];
-
-export default function Chart() {
+export default function Chart({ data }: ChartProps) {
   const [range, setRange] = useState(7);
 
   const filteredData = data.slice(-range);
@@ -143,7 +102,7 @@ export default function Chart() {
                     fill="#ef4444"
                     fillOpacity={0.15}
                   />
-                  <Line type="monotone" dataKey="sugar" stroke="#3b82f6" />
+                  <Line type="monotone" dataKey="value" stroke="#3b82f6" />
                 </LineChart>
               </ResponsiveContainer>
             </div>
