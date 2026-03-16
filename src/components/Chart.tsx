@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { SugarRecord } from "../types/SugarRecord";
 
 interface ChartProps {
   sortedDate: SugarRecord[];
