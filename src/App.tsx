@@ -12,14 +12,15 @@ import type { SugarRecord } from "./types/SugarRecord";
 function App() {
   const [isVisibleForm, setIsVisibleForm] = useState(false); //зміна для попапа
   const [data, setData] = useState<SugarRecord[]>(sugarDataArr); // стан для масива показників
+  const [editingId, setEditingId] = useState<string | null>(null); // стан для редагування айді
 
   const sortData = (data: SugarRecord[]): SugarRecord[] => {
     const newData = [...data].sort((a, b) => {
-      if (a.date < b.date) return -1;
-      if (a.date > b.date) return 1;
+      if (a.date < b.date) return 1;
+      if (a.date > b.date) return -1;
 
-      if (a.time < b.time) return -1;
-      if (a.time > b.time) return 1;
+      if (a.time < b.time) return 1;
+      if (a.time > b.time) return -1;
 
       return 0;
     });
@@ -28,32 +29,54 @@ function App() {
   };
 
   const sortedDate = sortData(data); // відсортований масив
-  const todayAverage: SugarRecord | undefined =
-    sortedDate[sortedDate.length - 1]; // поточний показник
-  const lastRaeding: SugarRecord | undefined =
-    sortedDate[sortedDate.length - 2]; // перед останній показник
+
+  const todayAverage: SugarRecord | undefined = sortedDate[0]; // поточний показник
+  const lastRaeding: SugarRecord | undefined = sortedDate[1]; // перед останній показник
 
   const entries = (data: SugarRecord[]): number => {
-    let count: number = 0;
+    let count = 0;
     const dataDay = new Date().toISOString().slice(0, 10);
+
     for (let i = 0; i < data.length; i++) {
-      if (data[i].date === dataDay) {
+      if (data[i].date.slice(0, 10) === dataDay) {
         count += 1;
       }
     }
+
     return count;
   };
 
+  //  ця функція тільки додає до масиву дані
+  // const addNewIndicator = (newIndicator: SugarRecord) => {
+  //   setData((prevData) => [...prevData, newIndicator]);
+  // };
+
+  // --- ця вже редагує
   const addNewIndicator = (newIndicator: SugarRecord) => {
-    setData((prevData) => [...prevData, newIndicator]);
+    setData((prevData) =>
+      prevData.some((el) => el.id === newIndicator.id)
+        ? prevData.map((el) => (el.id === newIndicator.id ? newIndicator : el))
+        : [...prevData, newIndicator],
+    );
   };
 
   const openForm = () => {
+    setEditingId(null);
     setIsVisibleForm(true);
   };
 
   const closeForm = () => {
     setIsVisibleForm(false);
+  };
+
+  const deleteItem = (elId: string): void => {
+    const newArr = data.filter((el) => el.id !== elId);
+    setData(newArr);
+  };
+
+  const edit = (elId: string): void => {
+    setIsVisibleForm(true);
+    setEditingId(elId);
   };
 
   return (
@@ -65,10 +88,15 @@ function App() {
         lastRaeding={lastRaeding}
         entries={entries(sortedDate)}
       />
-      <Chart sortedDate={sortedDate} />
-      <MyTable sortedDate={sortedDate} />
+      <Chart key={data.length} sortedDate={data} />
+      <MyTable sortedDate={sortedDate} deleteItem={deleteItem} edit={edit} />
       {isVisibleForm && (
-        <SugarAddForm addNewIndicator={addNewIndicator} closeForm={closeForm} />
+        <SugarAddForm
+          addNewIndicator={addNewIndicator}
+          closeForm={closeForm}
+          editingId={editingId}
+          data={data}
+        />
       )}
     </>
   );

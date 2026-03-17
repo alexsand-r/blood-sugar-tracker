@@ -1,5 +1,5 @@
 //..
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import { nanoid } from "nanoid";
 // import type { newDate } from "react-datepicker/dist/dist/date_utils.js";
@@ -12,10 +12,17 @@ import type { SugarRecord } from "../types/SugarRecord";
 type SugarAddForm = {
   closeForm: () => void;
   addNewIndicator: (indicator: SugarRecord) => void;
+  editingId: string | null;
+  data: SugarRecord[];
 };
 
 //..
-export const SugarAddForm = ({ closeForm, addNewIndicator }: SugarAddForm) => {
+export const SugarAddForm = ({
+  closeForm,
+  addNewIndicator,
+  editingId,
+  data,
+}: SugarAddForm) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date()); //стан календаря
 
   const [selectedSugar, setSelectedSugar] = useState<string>(""); //стан показника цукру
@@ -26,6 +33,17 @@ export const SugarAddForm = ({ closeForm, addNewIndicator }: SugarAddForm) => {
   const [selectedTime, setSelectedTime] = useState<string>(currentTime); // стан для часу заміра
 
   const [selectedMessage, setSelectedMessage] = useState<string>(""); //стан нотатки
+
+  const editingRecord = data.find((el) => el.id === editingId); // функція для редагування
+
+  useEffect(() => {
+    if (editingRecord) {
+      setSelectedDate(new Date(editingRecord.date));
+      setSelectedTime(editingRecord.time);
+      setSelectedSugar(String(editingRecord.value));
+      setSelectedMessage(editingRecord.note ?? "");
+    }
+  }, [editingRecord]);
 
   const handleTime = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedTime(event.target.value);
@@ -43,7 +61,7 @@ export const SugarAddForm = ({ closeForm, addNewIndicator }: SugarAddForm) => {
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // перевірити хай поки буде
+    event.preventDefault();
 
     const valueSugar = Number(selectedSugar);
 
@@ -52,20 +70,20 @@ export const SugarAddForm = ({ closeForm, addNewIndicator }: SugarAddForm) => {
       return;
     }
 
-    const formattedDate = selectedDate?.toISOString().split("T")[0] || "";
+    const formattedDate = selectedDate
+      ? `${selectedDate.toISOString().split("T")[0]}T${selectedTime}`
+      : "";
 
-    const newIndicator = {
-      id: nanoid(),
+    const indicator: SugarRecord = {
+      id: editingId ?? nanoid(),
       date: formattedDate,
       time: selectedTime,
       value: valueSugar,
       note: selectedMessage,
     };
 
-    addNewIndicator(newIndicator);
+    addNewIndicator(indicator);
     closeForm();
-
-    console.log(newIndicator);
   };
 
   return (

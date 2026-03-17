@@ -51,6 +51,7 @@ export const Indicators = ({
               <h2 className="capitalize text-white text-center font-bold mb-10">
                 Today's average
               </h2>
+
               <div className="flex justify-center gap-4 items-end">
                 <span
                   className={`w-14 h-14 ${bgColor} rounded-full flex items-center justify-center`}
@@ -64,37 +65,46 @@ export const Indicators = ({
                       <SmileNotNorm size={80} />
                     ))}
                 </span>
+
                 <p className="text-white text-center">
-                  {" "}
                   <span className="text-3xl mr-2 font-bold">
-                    {" "}
-                    {todayAverage?.value}{" "}
+                    {todayAverage?.value ?? "No data"}
                   </span>
-                  mmol/L
+                  {todayAverage ? "mmol/L" : ""}
                 </p>
-                <span
-                  className={`${(todayAverage?.value ?? 0) < (lastRaeding?.value ?? 0) ? "rotate-180" : "rotate-0"}`}
-                >
-                  <svg
-                    xmlns="http://www.w3.org"
-                    width="40"
-                    height="40"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+
+                {/* показуємо стрілку тільки якщо є два значення */}
+                {todayAverage && lastRaeding && (
+                  <span
+                    className={`${
+                      todayAverage.value < lastRaeding.value
+                        ? "rotate-180"
+                        : "rotate-0"
+                    }`}
                   >
-                    <polyline points="18 15 12 9 6 15"></polyline>
-                  </svg>
-                </span>
+                    <svg
+                      xmlns="http://www.w3.org"
+                      width="40"
+                      height="40"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="white"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                  </span>
+                )}
               </div>
             </div>
+
             <div className="bg-[#afe6d1] p-4 rounded-lg">
               <h2 className="capitalize text-center font-bold mb-10 text-[#103047]">
                 last raeding
               </h2>
+
               <div className="flex justify-center gap-4 items-end">
                 <span
                   className={`w-14 h-14 ${bgColorD} rounded-full flex items-center justify-center`}
@@ -108,25 +118,24 @@ export const Indicators = ({
                       <SmileNotNorm size={80} color="#103047" />
                     ))}
                 </span>
+
                 <p className="text-center text-[#103047]">
-                  {" "}
                   <span className="text-3xl mr-2 font-bold">
-                    {" "}
-                    {lastRaeding?.value}
+                    {lastRaeding?.value ?? "No data"}
                   </span>
-                  mmol/L
+                  {lastRaeding ? "mmol/L" : ""}
                 </p>
               </div>
             </div>
+
             <div className="bg-[#fadb9b] p-4 rounded-lg flex flex-col justify-between">
               <h2 className="capitalize text-center font-bold mb-10 text-[#103047]">
                 raedings today
               </h2>
+
               <p className="text-center text-[#103047]">
-                {" "}
                 <span className="text-3xl mr-2 font-bold">
-                  {" "}
-                  {entries === 0 ? "No entries yet" : `${entries} entries`}{" "}
+                  {entries === 0 ? "No entries yet" : `${entries} entries`}
                 </span>
               </p>
             </div>

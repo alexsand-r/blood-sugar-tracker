@@ -163,4 +163,11 @@ export const sugarDataArr: SugarRecord[] = [
     value: 7.0,
     note: "After lunch",
   },
+  {
+    id: "61",
+    date: "2026-03-16",
+    time: "13:30",
+    value: 3.6,
+    note: "After lunch",
+  },
 ];
