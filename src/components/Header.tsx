@@ -12,7 +12,7 @@ export const Header = () => {
             <div className="absolute right-0">
               <label className="flex items-center justify-center rounded-full p-0.5 bg-emerald-300 cursor-pointer">
                 <img
-                  className="w-7 h-8 sm:w-9 sm:h-9 rounded-full"
+                  className="w-8 h-8 sm:w-9 sm:h-9 rounded-full flex shrink-0"
                   src="/user.svg"
                   alt="avatar"
                 />
