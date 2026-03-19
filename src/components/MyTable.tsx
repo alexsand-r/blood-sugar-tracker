@@ -3,14 +3,23 @@ import type { SugarRecord } from "../types/SugarRecord";
 import { formatDate } from "../utils/formatDate";
 import { DeleteIcon } from "./Icons/DeleteIcon";
 import { EditIcon } from "./Icons/EditIcon";
+import { ArrowIcon } from "./Icons/ArrowIcon";
 
 interface MyTableProps {
   sortedDate: SugarRecord[];
   deleteItem: (elId: string) => void;
   edit: (elId: string) => void;
+  setSortType: (type: "date" | "max" | "min") => void;
+  sortType: "date" | "max" | "min";
 }
 
-export const MyTable = ({ sortedDate, deleteItem, edit }: MyTableProps) => {
+export const MyTable = ({
+  sortedDate,
+  deleteItem,
+  edit,
+  setSortType,
+  sortType,
+}: MyTableProps) => {
   return (
     <>
       <div className="mb-10">
@@ -19,33 +28,63 @@ export const MyTable = ({ sortedDate, deleteItem, edit }: MyTableProps) => {
             <table className="w-full min-w-150 text-sm text-left rtl:text-right text-body">
               <thead className="sticky top-0 text-sm text-body bg-emerald-300  border-b rounded-lg border-gray-200">
                 <tr>
+                  {/* data */}
                   <th
                     scope="col"
-                    className="px-3 py-2 sm:px-6 sm:py-4 font-medium text-center"
+                    className="font-medium text-center px-3 py-2 sm:px-6 sm:py-4"
                   >
-                    Date
+                    <div className="flex items-center justify-center gap-2">
+                      <span>Date</span>
+
+                      <span
+                        className={`w-8 h-8 hover:bg-emerald-400 cursor-pointer transition duration-300 rotate-180 flex items-center justify-center 
+                          ${sortType === "date" ? "bg-emerald-500" : "bg-emerald-300"}`}
+                        onClick={() => setSortType("date")}
+                      >
+                        <ArrowIcon />
+                      </span>
+                    </div>
                   </th>
+                  {/* time */}
                   <th
                     scope="col"
-                    className="px-3 py-2 sm:px-6 sm:py-4 font-medium text-center"
+                    className="font-medium text-center px-3 py-2 sm:px-6 sm:py-4"
                   >
                     Time
                   </th>
+                  {/* level */}
                   <th
                     scope="col"
-                    className="px-3 py-2 sm:px-6 sm:py-4 font-medium text-center"
+                    className="font-medium text-center px-3 py-2 sm:px-6 sm:py-4"
                   >
-                    Level
+                    <div className="flex items-center justify-center gap-2">
+                      <span
+                        className={`w-8 h-8 hover:bg-emerald-400 cursor-pointer transition duration-300 flex items-center justify-center ${sortType === "max" ? "bg-emerald-500" : "bg-emerald-300"}`}
+                        onClick={() => setSortType("max")}
+                      >
+                        <ArrowIcon />
+                      </span>
+                      <span> Level</span>
+
+                      <span
+                        className={`rotate-180 w-8 h-8 hover:bg-emerald-400 cursor-pointer transition duration-300 flex items-center justify-center ${sortType === "min" ? "bg-emerald-500" : "bg-emerald-300"}`}
+                        onClick={() => setSortType("min")}
+                      >
+                        <ArrowIcon />
+                      </span>
+                    </div>
                   </th>
+                  {/* note */}
                   <th
                     scope="col"
-                    className="px-3 py-2 sm:px-6 sm:py-4 font-medium text-center"
+                    className="px-3 py-2 sm:px-6 sm:py-4 font-medium text-center "
                   >
                     Note
                   </th>
+                  {/*  Edit / Delete  */}
                   <th
                     scope="col"
-                    className="px-3 py-2 sm:px-6 sm:py-4 font-medium text-center"
+                    className="font-medium text-center px-3 py-2 sm:px-6 sm:py-4"
                   >
                     Edit / Delete
                   </th>

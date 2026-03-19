@@ -4,6 +4,7 @@ import type { SugarRecord } from "../types/SugarRecord";
 import { SmileOk } from "./Icons/SmileOk";
 import { SmileBad } from "./Icons/SmileBad";
 import { SmileNotNorm } from "./Icons/SmaleNotNorm";
+import { ArrowIcon } from "./Icons/ArrowIcon";
 
 type IndicatorsProps = {
   todayAverage: SugarRecord | undefined;
@@ -82,19 +83,7 @@ export const Indicators = ({
                         : "rotate-0"
                     }`}
                   >
-                    <svg
-                      xmlns="http://www.w3.org"
-                      width="40"
-                      height="40"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="white"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <polyline points="18 15 12 9 6 15"></polyline>
-                    </svg>
+                    <ArrowIcon />
                   </span>
                 )}
               </div>

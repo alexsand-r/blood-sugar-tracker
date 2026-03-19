@@ -13,9 +13,21 @@ function App() {
   const [isVisibleForm, setIsVisibleForm] = useState(false); //зміна для попапа
   const [data, setData] = useState<SugarRecord[]>(sugarDataArr); // стан для масива показників
   const [editingId, setEditingId] = useState<string | null>(null); // стан для редагування айді
+  const [sortType, setSortType] = useState<"date" | "max" | "min">("date");
 
+  // це відсортований масив п
   const sortData = (data: SugarRecord[]): SugarRecord[] => {
-    const newData = [...data].sort((a, b) => {
+    const newData = [...data];
+
+    if (sortType === "max") {
+      return newData.sort((a, b) => b.value - a.value);
+    }
+
+    if (sortType === "min") {
+      return newData.sort((a, b) => a.value - b.value);
+    }
+
+    return newData.sort((a, b) => {
       if (a.date < b.date) return 1;
       if (a.date > b.date) return -1;
 
@@ -24,11 +36,9 @@ function App() {
 
       return 0;
     });
-
-    return newData;
   };
 
-  const sortedDate = sortData(data); // відсортований масив
+  const sortedDate = sortData(data); // похідний масив
 
   const todayAverage: SugarRecord | undefined = sortedDate[0]; // поточний показник
   const lastRaeding: SugarRecord | undefined = sortedDate[1]; // перед останній показник
@@ -51,7 +61,7 @@ function App() {
   //   setData((prevData) => [...prevData, newIndicator]);
   // };
 
-  // --- ця вже редагує
+  // --- ця вже додає і редагує
   const addNewIndicator = (newIndicator: SugarRecord) => {
     setData((prevData) =>
       prevData.some((el) => el.id === newIndicator.id)
@@ -89,7 +99,13 @@ function App() {
         entries={entries(sortedDate)}
       />
       <Chart key={data.length} sortedDate={data} />
-      <MyTable sortedDate={sortedDate} deleteItem={deleteItem} edit={edit} />
+      <MyTable
+        sortedDate={sortedDate}
+        deleteItem={deleteItem}
+        edit={edit}
+        setSortType={setSortType}
+        sortType={sortType}
+      />
       {isVisibleForm && (
         <SugarAddForm
           addNewIndicator={addNewIndicator}

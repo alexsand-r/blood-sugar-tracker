@@ -61,7 +61,7 @@ export default function Chart({ sortedDate }: ChartProps) {
               setRange(7);
               setYear(null);
             }}
-            className="px-3 py-1 rounded bg-gray-200"
+            className={`px-3 py-1 rounded ${range === 7 ? "bg-emerald-300 text-white" : "bg-gray-200 hover:bg-emerald-300 hover:text-white"}  transition duration-300 cursor-pointer`}
           >
             7 days
           </button>
@@ -71,7 +71,7 @@ export default function Chart({ sortedDate }: ChartProps) {
               setRange(30);
               setYear(null);
             }}
-            className="px-3 py-1 rounded bg-gray-200"
+            className={`px-3 py-1 rounded transition duration-300 cursor-pointer ${range === 30 ? "bg-emerald-300 text-white" : "bg-gray-200"}`}
           >
             30 days
           </button>
@@ -82,12 +82,13 @@ export default function Chart({ sortedDate }: ChartProps) {
 
               if (selectedYear !== "default") {
                 setYear(selectedYear);
+                setRange(0);
               } else {
                 setYear(null);
               }
             }}
-            defaultValue="default"
-            className="px-3 py-1 rounded bg-gray-200"
+            value={year ?? "default"}
+            className={`transition duration-300 cursor-pointer px-3 py-1 rounded ${year !== null ? "bg-emerald-300 text-white" : "bg-gray-200"}`}
           >
             <option value="default">choose a year</option>
             <option value="2024">2024</option>
@@ -95,7 +96,7 @@ export default function Chart({ sortedDate }: ChartProps) {
             <option value="2026">2026</option>
           </select>
         </div>
-        <div className="translate-x-[-20px]">
+        <div className="-translate-x-5">
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={filteredData}>
               <CartesianGrid strokeDasharray="3 3" />
