@@ -91,7 +91,7 @@ export const Indicators = ({
 
             <div className="bg-[#afe6d1] p-4 rounded-lg">
               <h2 className="capitalize text-center font-bold mb-10 text-[#103047]">
-                last raeding
+                last reading
               </h2>
 
               <div className="flex justify-center gap-4 items-end">
@@ -119,7 +119,7 @@ export const Indicators = ({
 
             <div className="bg-[#fadb9b] p-4 rounded-lg flex flex-col justify-between">
               <h2 className="capitalize text-center font-bold mb-10 text-[#103047]">
-                raedings today
+                readings today
               </h2>
 
               <p className="text-center text-[#103047]">

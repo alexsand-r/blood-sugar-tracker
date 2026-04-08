@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import "./index.css";
 import { Header } from "./components/Header";
 import { Button } from "./components/Button";
@@ -15,7 +15,7 @@ function App() {
   const [editingId, setEditingId] = useState<string | null>(null); // стан для редагування айді
   const [sortType, setSortType] = useState<"date" | "max" | "min">("date");
 
-  // це відсортований масив п
+  // це функція для сортування
   const sortData = (data: SugarRecord[]): SugarRecord[] => {
     const newData = [...data];
 
@@ -38,7 +38,7 @@ function App() {
     });
   };
 
-  const sortedDate = sortData(data); // похідний масив
+  const sortedDate = sortData(data);
 
   const todayAverage: SugarRecord | undefined = sortedDate[0]; // поточний показник
   const lastRaeding: SugarRecord | undefined = sortedDate[1]; // перед останній показник
