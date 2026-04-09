@@ -10,7 +10,7 @@
 
 ## 🚀 Live Demo
 
-🔗 https://your-project.vercel.app
+🔗 [https://your-project.vercel.app](https://blood-sugar-tracker-nu.vercel.app/)
 
 ---
 
